@@ -1,0 +1,108 @@
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th>Attribute name</th>
+        <th>Value</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let attribute of attributes">
+        <td><span>
+                {{attribute.name}}
+            </span></td>
+        <td><span>
+                {{getValueByAttributeId(attribute.id)}}
+            </span></td>
+        <td>
+            <button class="btn btn-sm btn-warning"
+                    (click)="openEdit(contentEdit, attribute, getValueByAttributeId(attribute.id))">
+                <i class="fa fa-edit">
+                </i>Edit value
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<ng-template #contentEdit let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title__">Edit value</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="editForm" novalidate>
+
+            <div class="form-group" [classList]="'display-none'">
+                <label>ID</label>
+                <div class="input-group">
+                    <input formControlName="attributeId" class="form-control" [readOnly]="true">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Attribute name</label>
+                <div class="input-group">
+                    <input formControlName="attributeName" class="form-control" [readOnly]="true">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Old value</label>
+                <div class="input-group">
+                    <input formControlName="oldValue" class="form-control" [readOnly]="true">
+                </div>
+            </div>
+
+            <div class="form-group" [classList]="'display-none'">
+                <label>Value</label>
+                <div class="input-group">
+                    <input formControlName="value" class="form-control" [readOnly]="true">
+                </div>
+            </div>
+
+            <div class="form-group" [classList]="'display-none'">
+                <label>Date value</label>
+                <div class="input-group">
+                    <input formControlName="dateValue" class="form-control" [readOnly]="true">
+                </div>
+            </div>
+
+            <div class="form-group" [classList]="'display-none'">
+                <label>Object value</label>
+                <div class="input-group">
+                    <input formControlName="objectValue" class="form-control" [readOnly]="true">
+                </div>
+            </div><br/><br/>
+
+            <label style="margin-right: 10px">Text value:</label>
+            <input type="text" id="valueToEdit">
+            <br/>or<br/>
+            <label style="margin-right: 10px">Date value:</label>
+            <input type="date" id="dateValueToEdit">
+            <br/>or<br/>
+            <label style="margin-right: 10px">Object value:</label>
+            <select  id="objectValueToEdit">
+                <option selected value="0">Select object value</option>
+                <option *ngFor="let object of objects"
+                    value="{{object.id}}"
+                >
+                    {{object.name}}
+                </option>
+            </select>
+
+
+            <div class="border text-center">
+                <button data-dismiss="modal" class="btn btn-info" (click)="checkAndSave()">Save changes</button>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Close</button>
+    </div>
+</ng-template>
+

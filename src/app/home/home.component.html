@@ -1,0 +1,19 @@
+<body>
+
+    <select id="objectTypeList"
+            [classList]="'form-select w-25 selectObjType'"
+            (click)="setSelectedObjectType()"
+    >
+        <option value="0">Select object type</option>
+        <option *ngFor="let objectType of objectTypes"
+                value="{{objectType.id}}"
+        >
+            {{objectType.name}}
+        </option>
+    </select>
+
+    <app-object-list
+        objectTypeId = {{selectedObjectTypeId}}
+    ></app-object-list>
+
+</body>

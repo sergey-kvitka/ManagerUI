@@ -1,0 +1,142 @@
+<div style="height: 30px;"></div>
+<div *ngIf="objectTypeId != undefined && +objectTypeId != 0">
+
+    <button class="btn btn-md btn-outline-primary" (click)="open(content)">
+        <i class="fa fa-database" style="margin-right: 1px"></i>
+        <i class="fa fa-plus"></i>Create new object
+    </button>
+
+    <div [classList]="'obj-list-table'">
+        <div style="width: 60px"></div>
+        <div style="width: 500px">Name</div>
+        <div>Object type</div>
+        <div>Parent object</div>
+        <div>Actions</div>
+    </div>
+
+    <div *ngFor="let object of objects"
+         class="table-and-values display-flex"
+    >
+        <div [classList]="'obj-list-table display-flex'">
+            <div style="width: 60px">
+                <span [classList]="'fa fa-arrow-up'" id="arrow_{{object.id}}"
+                      (click)="toggleValueDiv(object.id)"></span>
+            </div>
+
+            <div style="width: 500px"><span>
+            {{object.name}}
+        </span></div>
+
+            <div><span>
+            {{objectTypeNames.get(object.id)}}
+        </span></div>
+
+            <div><span>
+            {{parentObjects.get(object.id)}}
+        </span></div>
+
+            <div>
+                <button class="btn btn-sm btn-warning"  (click)="openEdit(contentEdit, object)">
+                    <i class="fa fa-edit"></i> Edit
+                </button>
+                <button class="btn btn-sm btn-danger"  (click)="delete(object)">
+                    <i class="fa fa-remove"></i> Delete
+                </button>
+            </div>
+        </div>
+
+        <div [classList]="'values-under-list display-none'" id="values_{{object.id}}">
+            <app-values
+                objectId = {{object.id}}
+                objectTypeId = {{objectTypeId}}
+            >
+            </app-values>
+        </div>
+    </div>
+
+</div>
+
+<div *ngIf="!(objectTypeId != undefined && +objectTypeId != 0)">
+
+</div>
+
+<ng-template #contentEdit let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title__">Edit object</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="editForm" novalidate>
+
+            <div class="form-group" [classList]="'display-none'">
+                <label>ID</label>
+                <div class="input-group">
+                    <input formControlName="id" class="form-control" [readOnly]="true">
+                </div>
+            </div>
+
+            <div class="form-group" [classList]="'display-none'">
+                <label>Parent object ID</label>
+                <div class="input-group">
+                    <input formControlName="parentObjectId" class="form-control" [readOnly]="true">
+                </div>
+            </div>
+
+            <div class="form-group" [classList]="'display-none'">
+                <label>Object type ID</label>
+                <div class="input-group">
+                    <input formControlName="objectTypeId" class="form-control" [readOnly]="true">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Object name</label>
+                <div class="input-group">
+                    <input formControlName="name" class="form-control">
+                </div>
+            </div><br/><br/>
+
+
+            <div class="border text-center">
+                <button data-dismiss="modal" class="btn btn-info" (click)="onSave()">Save changes</button>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Close</button>
+    </div>
+</ng-template>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">New object</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+
+            <div class="form-group">
+                <label for="name">Name</label>
+                <div class="input-group">
+                    <input id="name" name="name" class="form-control" ngModel>
+                </div>
+            </div>
+
+            <div class="border text-center">
+                <button data-dismiss="modal" class="btn btn-info">Create object</button>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Close</button>
+    </div>
+
+</ng-template>
